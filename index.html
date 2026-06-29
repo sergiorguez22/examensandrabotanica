@@ -39,9 +39,7 @@
   .btn:focus-visible,.row:focus-visible,.opt:focus-visible,.tile:focus-visible,.back:focus-visible{outline:3px solid rgba(31,122,77,.45);outline-offset:2px}
 
   .masthead{display:flex;justify-content:center;padding:6px 0 24px}
-  .urjc{display:inline-flex;align-items:center;gap:15px}
-  .urjc-iso{height:64px;width:auto;display:block;color:var(--brand)}
-  .urjc-name{font-size:15px;line-height:1.14;font-weight:600;letter-spacing:-.01em;color:var(--brand)}
+  .urjc-logo{height:50px;width:auto;display:block}
   .eyebrow{font-size:13px;font-weight:600;letter-spacing:-.01em;color:var(--brand);margin-bottom:8px}
 
   .hero{padding:8px 0 30px}
@@ -206,17 +204,7 @@ function Home({onTema, onGen}){
   return (
     <div className="wrap">
       <div className="masthead">
-        <span className="urjc">
-          <svg className="urjc-iso" viewBox="0 0 120 150" role="img" aria-label="Universidad Rey Juan Carlos">
-            <circle cx="60" cy="16" r="7.5" fill="currentColor"/>
-            <circle cx="25" cy="44" r="15.5" fill="currentColor"/>
-            <circle cx="60" cy="41" r="17" fill="currentColor"/>
-            <circle cx="95" cy="44" r="15.5" fill="currentColor"/>
-            <rect x="22" y="67" width="76" height="12" rx="4" fill="currentColor"/>
-            <path d="M30 90 L30 110 A30 30 0 0 0 90 110 L90 90 L76 90 L76 110 A16 16 0 0 1 44 110 L44 90 Z" fill="currentColor"/>
-          </svg>
-          <span className="urjc-name">Universidad<br/>Rey Juan Carlos</span>
-        </span>
+        <img className="urjc-logo" src="urjc.svg" alt="Universidad Rey Juan Carlos" />
       </div>
 
       <div className="hero">
