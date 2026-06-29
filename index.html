@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Botánica · Tests de Sandra</title>
+<style>
+  :root{
+    --bg:#ffffff; --bg-soft:#f5f5f7; --card:#ffffff;
+    --ink:#1d1d1f; --ink-2:#6e6e73; --ink-3:#86868b;
+    --line:rgba(0,0,0,.10); --line-2:rgba(0,0,0,.06);
+    --brand:#1f7a4d; --brand-press:#186b42; --brand-bg:#e8f3ec;
+    --green:#1f7a4d; --green-bg:#e8f3ec;
+    --red:#b1492f; --red-bg:#f7ece8;
+    --amber:#b8862f;
+    --radius:18px;
+    --shadow:0 4px 20px -8px rgba(0,0,0,.12);
+    --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",system-ui,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg-soft); color:var(--ink); font-family:var(--font);
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; line-height:1.47;
+  }
+  #root{min-height:100dvh}
+  .wrap{max-width:680px;margin:0 auto;padding:max(22px,env(safe-area-inset-top)) 20px 96px}
+  h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.022em;color:var(--ink)}
+  .muted{color:var(--ink-2)}
+  .tiny{color:var(--ink-3)}
+
+  button{font-family:inherit}
+  .btn{font-size:16px;font-weight:500;cursor:pointer;border:none;border-radius:12px;padding:13px 22px;transition:background .18s ease, opacity .18s ease}
+  .btn:active{opacity:.82}
+  .btn-primary{background:var(--brand);color:#fff}
+  .btn-primary:hover{background:var(--brand-press)}
+  .btn-secondary{background:rgba(0,0,0,.05);color:var(--ink)}
+  .btn-secondary:hover{background:rgba(0,0,0,.08)}
+  .btn:focus-visible,.row:focus-visible,.opt:focus-visible,.tile:focus-visible,.back:focus-visible{outline:3px solid rgba(31,122,77,.45);outline-offset:2px}
+
+  .masthead{display:flex;justify-content:center;padding:6px 0 24px}
+  .urjc{display:inline-flex;align-items:center;gap:13px}
+  .urjc-mark{font-size:30px;font-weight:700;letter-spacing:-.03em;color:var(--brand);line-height:1}
+  .urjc-name{font-size:11px;line-height:1.25;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--brand);padding-left:13px;border-left:1.5px solid rgba(31,122,77,.35)}
+  .urjc-logo{height:54px;width:auto;display:block}
+  .eyebrow{font-size:13px;font-weight:600;letter-spacing:-.01em;color:var(--brand);margin-bottom:8px}
+
+  .hero{padding:8px 0 30px}
+  .hero h1{font-size:40px;line-height:1.05;letter-spacing:-.03em}
+  .hero p{font-size:18px;color:var(--ink-2);margin:12px 0 0;max-width:30ch}
+  @media(max-width:480px){.hero h1{font-size:32px}.hero p{font-size:16px}}
+
+  .label{font-size:13px;font-weight:600;color:var(--ink-3);letter-spacing:-.01em;margin:34px 4px 12px;display:flex;justify-content:space-between}
+
+  .list{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  .row{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:none;border:none;cursor:pointer;padding:15px 18px;border-bottom:1px solid var(--line-2);transition:background .15s}
+  .row:last-child{border-bottom:none}
+  .row:hover{background:rgba(0,0,0,.022)}
+  .row .idx{flex:0 0 auto;width:30px;height:30px;border-radius:9px;background:var(--bg-soft);color:var(--ink-2);font-size:13px;font-weight:600;display:grid;place-items:center;letter-spacing:-.02em}
+  .row .grow{flex:1;min-width:0}
+  .row .t{font-size:16px;font-weight:500;letter-spacing:-.015em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .row .s{font-size:13px;color:var(--ink-3);margin-top:1px}
+  .row .chev{flex:0 0 auto;color:var(--ink-3);font-size:19px;line-height:1}
+
+  .tiles{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  @media(max-width:520px){.tiles{grid-template-columns:1fr}}
+  .tile{background:var(--card);border-radius:16px;box-shadow:var(--shadow);border:none;cursor:pointer;padding:18px;text-align:left;transition:transform .12s ease}
+  .tile:hover{transform:translateY(-2px)}
+  .tile .d{width:10px;height:10px;border-radius:50%;display:block;margin-bottom:12px}
+  .tile .nm{font-size:17px;font-weight:600;letter-spacing:-.02em}
+  .tile .mt{font-size:13px;color:var(--ink-3);margin-top:2px}
+
+  .back{display:inline-flex;align-items:center;gap:4px;background:none;border:none;color:var(--brand);font-size:16px;cursor:pointer;padding:6px 0;margin-bottom:10px;font-weight:400}
+  .back:hover{opacity:.8}
+
+  .screen-h{font-size:28px;letter-spacing:-.028em;margin:4px 0 2px}
+  .screen-s{font-size:14px;color:var(--ink-3);margin-bottom:20px}
+
+  .qbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:14px}
+  .qcount{font-size:13px;color:var(--ink-3);font-weight:500}
+  .track{height:5px;background:rgba(0,0,0,.08);border-radius:999px;overflow:hidden;margin-bottom:26px}
+  .track > i{display:block;height:100%;background:var(--brand);border-radius:999px;transition:width .3s ease}
+  .q{font-size:23px;font-weight:600;letter-spacing:-.022em;line-height:1.3;margin:0 0 22px}
+  @media(max-width:480px){.q{font-size:20px}}
+  .opts{display:flex;flex-direction:column;gap:10px}
+  .opt{display:flex;align-items:center;gap:13px;text-align:left;width:100%;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 16px;font-size:16px;color:var(--ink);cursor:pointer;transition:border-color .14s, background .14s}
+  .opt:hover{border-color:rgba(0,0,0,.22)}
+  .opt .mark{flex:0 0 auto;width:22px;height:22px;border-radius:50%;border:2px solid rgba(0,0,0,.22);display:grid;place-items:center;transition:all .14s}
+  .opt.sel{border-color:var(--brand);background:rgba(31,122,77,.06)}
+  .opt.sel .mark{border-color:var(--brand);background:var(--brand)}
+  .opt.sel .mark::after{content:"";width:7px;height:7px;border-radius:50%;background:#fff}
+  .qnav{display:flex;gap:10px;margin-top:26px}
+  .qnav .grow{flex:1}
+  .blank{display:block;margin:16px auto 0;background:none;border:none;color:var(--ink-3);font-size:14px;cursor:pointer}
+  .blank:hover{color:var(--ink-2)}
+
+  .result-card{background:var(--card);border-radius:24px;box-shadow:var(--shadow);padding:30px;text-align:center;margin-bottom:14px}
+  .grade{font-size:72px;font-weight:600;letter-spacing:-.04em;line-height:1}
+  .grade small{font-size:26px;color:var(--ink-3);font-weight:500}
+  .grade.pass{color:var(--green)} .grade.fail{color:var(--ink)}
+  .result-card .ttl{font-size:15px;color:var(--ink-2);margin-top:6px}
+  .stats{display:flex;justify-content:center;gap:22px;margin-top:18px}
+  .stat .v{font-size:22px;font-weight:600;letter-spacing:-.02em}
+  .stat .k{font-size:12px;color:var(--ink-3);margin-top:1px}
+  .stat.g .v{color:var(--green)} .stat.r .v{color:var(--red)}
+
+  .rev-h{font-size:13px;font-weight:600;color:var(--ink-3);margin:24px 4px 12px}
+  .rev{display:flex;flex-direction:column;gap:12px}
+  .ri{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:16px 18px}
+  .ri .rq{font-size:16px;font-weight:600;letter-spacing:-.015em;margin-bottom:11px}
+  .ro{display:flex;gap:9px;align-items:flex-start;font-size:14.5px;padding:9px 12px;border-radius:10px;margin:5px 0}
+  .ro.good{background:var(--green-bg);color:var(--green)}
+  .ro.bad{background:var(--red-bg);color:var(--red)}
+  .ro.blank{background:var(--bg-soft);color:var(--ink-3)}
+  .ro .ic{flex:0 0 auto;font-weight:700}
+  .rexp{font-size:13.5px;color:var(--ink-2);margin-top:11px;padding-top:11px;border-top:1px solid var(--line-2)}
+  .rexp b{color:var(--ink)}
+
+  .empty{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:30px;text-align:center;color:var(--ink-2);font-size:15px}
+  .foot{margin-top:30px;text-align:center;font-size:12.5px;color:var(--ink-3)}
+  @media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<!-- Bancos de contenido de Sandra -->
+<script src="sandra_botanica_T1.js"></script>
+<script src="sandra_botanica_T2.js"></script>
+<script src="sandra_botanica_T2_extra.js"></script>
+<script src="sandra_botanica_T3.js"></script>
+<script src="sandra_botanica_T4.js"></script>
+<script src="sandra_botanica_T5.js"></script>
+<script src="sandra_botanica_T6.js"></script>
+<script src="sandra_botanica_T7.js"></script>
+<script src="sandra_botanica_T8.js"></script>
+<script src="sandra_botanica_generales.js"></script>
+
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel">
+const { useState, useMemo } = React;
+const PEN = 0.3;
+const LETTERS = ["A","B","C","D","E"];
+
+function normQ(q){
+  const pregunta = q.pregunta!=null ? q.pregunta : q.q;
+  const opciones = q.opciones!=null ? q.opciones : q.o;
+  const correcta = q.correcta!=null ? q.correcta : q.c;
+  let tipo = q.tipo;
+  if(!tipo) tipo = (opciones && opciones.length===2 && /verdad|falso/i.test((opciones[0]||"")+(opciones[1]||""))) ? "vf" : "multiple";
+  return {tipo, pregunta, opciones:[...opciones], correcta, explicacion:q.explicacion||q.e||""};
+}
+function normTest(t,idx){
+  return {id:t.id||("t"+idx), nombre:t.nombre||t.title||("Test "+(idx+1)), preguntas:(t.preguntas||t.questions||[]).map(normQ)};
+}
+function normBank(b){
+  return {tema:b.tema, titulo:b.titulo||b.title||("Tema "+b.tema), tests:(b.tests||[]).map(normTest)};
+}
+
+function loadTemas(){
+  const temas = [];
+  for(let i=1;i<=12;i++){ const b=window["sandra_botanica_T"+i]; if(b&&Array.isArray(b.tests)) temas.push(normBank(b)); }
+  Object.keys(window).filter(k=>/^sandra_botanica_T\d+_extra$/.test(k)).forEach(k=>{
+    const ex=window[k]; if(!ex||!ex.tests) return;
+    const dst=temas.find(t=>t.tema===ex.tema);
+    if(dst){ const have=new Set(dst.tests.map(t=>t.id)); ex.tests.forEach((t,j)=>{ const nt=normTest(t,j); if(!have.has(nt.id)) dst.tests.push(nt); }); }
+  });
+  temas.sort((a,b)=>a.tema-b.tema);
+  return temas;
+}
+const TEMAS = loadTemas();
+const GEN = (()=>{
+  const g=window.sandra_botanica_generales; if(!g||!g.niveles) return null;
+  const niveles={};
+  Object.keys(g.niveles).forEach(niv=>{ niveles[niv]=(g.niveles[niv]||[]).map((ex,k)=>({id:ex.id||("gen-"+niv+"-"+k),nombre:ex.nombre||("Examen "+(k+1)),preguntas:(ex.preguntas||[]).map(normQ)})); });
+  return {preguntasPorExamen:g.preguntasPorExamen||30, niveles};
+})();
+
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function prep(preguntas){
+  return shuffle(preguntas).map(q=>{
+    if(q.tipo!=="multiple") return {...q, opciones:[...q.opciones]};
+    const pares = shuffle(q.opciones.map((op,i)=>({op,i})));
+    return {...q, opciones:pares.map(p=>p.op), correcta:pares.findIndex(p=>p.i===q.correcta)};
+  });
+}
+function nota(aciertos, fallos, n){ return Math.max(0,(aciertos - PEN*fallos)/n*10); }
+function fmt(x){ return (Math.round(x*100)/100).toString().replace(".",","); }
+
+function Home({onTema, onGen}){
+  return (
+    <div className="wrap">
+      <div className="masthead">
+        {/* Para usar el logo oficial: sube urjc.svg (o .png con transparencia) a la raíz
+            y sustituye el <span className="urjc">...</span> por:
+            <span className="urjc-logo" style={{WebkitMask:"url(urjc.svg) center/contain no-repeat", mask:"url(urjc.svg) center/contain no-repeat", background:"var(--brand)", width:"190px"}} aria-label="URJC" /> */}
+        <span className="urjc">
+          <span className="urjc-mark">URJC</span>
+          <span className="urjc-name">Universidad<br/>Rey Juan Carlos</span>
+        </span>
+      </div>
+
+      <div className="hero">
+        <div className="eyebrow">Botánica · Tests de Sandra</div>
+        <h1>Practica para el examen.</h1>
+        <p>Elige un tema o lánzate a un examen general por dificultad.</p>
+      </div>
+
+      <div className="label"><span>Temas</span><span>{TEMAS.length}</span></div>
+      {TEMAS.length===0
+        ? <div className="empty">No se han cargado los temas. Comprueba que los archivos <b>sandra_botanica_TX.js</b> estén junto al index.html.</div>
+        : <div className="list">
+            {TEMAS.map(t=>(
+              <button key={t.tema} className="row" onClick={()=>onTema(t.tema)}>
+                <span className="idx">{t.tema}</span>
+                <span className="grow">
+                  <div className="t">{t.titulo}</div>
+                  <div className="s">{t.tests.length} {t.tests.length===1?"test":"tests"}</div>
+                </span>
+                <span className="chev">›</span>
+              </button>
+            ))}
+          </div>}
+
+      {GEN && (
+        <>
+          <div className="label"><span>Exámenes generales</span><span>{GEN.preguntasPorExamen} preguntas · −{fmt(PEN)}/fallo</span></div>
+          <div className="tiles">
+            <button className="tile" onClick={()=>onGen("sencillo")}><span className="d" style={{background:"#2e8b57"}}></span><div className="nm">Sencillo</div><div className="mt">{(GEN.niveles.sencillo||[]).length} exámenes</div></button>
+            <button className="tile" onClick={()=>onGen("medio")}><span className="d" style={{background:"#b8862f"}}></span><div className="nm">Medio</div><div className="mt">{(GEN.niveles.medio||[]).length} exámenes</div></button>
+            <button className="tile" onClick={()=>onGen("complicado")}><span className="d" style={{background:"#b1492f"}}></span><div className="nm">Complicado</div><div className="mt">{(GEN.niveles.complicado||[]).length} exámenes</div></button>
+          </div>
+        </>
+      )}
+      <div className="foot">Cada intento baraja preguntas y opciones. Las preguntas en blanco no penalizan.</div>
+    </div>
+  );
+}
+
+function TestList({eyebrow, titulo, tests, onBack, onPick}){
+  return (
+    <div className="wrap">
+      <button className="back" onClick={onBack}>‹ Inicio</button>
+      <div className="screen-s" style={{marginBottom:"2px"}}>{eyebrow}</div>
+      <h2 className="screen-h">{titulo}</h2>
+      <div className="screen-s">{tests.length} {tests.length===1?"test":"tests"} · toca para empezar</div>
+      <div className="list">
+        {tests.map((t,i)=>(
+          <button key={t.id} className="row" onClick={()=>onPick(t)}>
+            <span className="idx">{i+1}</span>
+            <span className="grow">
+              <div className="t">{t.nombre}</div>
+              <div className="s">{t.preguntas.length} preguntas</div>
+            </span>
+            <span className="chev">›</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Quiz({titulo, preguntas, onExit}){
+  const data = useMemo(()=>prep(preguntas),[preguntas]);
+  const n = data.length;
+  const [i,setI] = useState(0);
+  const [ans,setAns] = useState(()=>Array(n).fill(null));
+  const [done,setDone] = useState(false);
+  const q = data[i];
+  const pick = (oi)=>{ const a=ans.slice(); a[i]=oi; setAns(a); };
+  const adv = ()=> i<n-1 ? setI(i+1) : setDone(true);
+
+  if(done){
+    let ac=0,fa=0,bl=0;
+    data.forEach((qq,k)=>{ const a=ans[k]; if(a===null) bl++; else if(a===qq.correcta) ac++; else fa++; });
+    const N = nota(ac,fa,n);
+    return (
+      <div className="wrap">
+        <button className="back" onClick={onExit}>‹ Inicio</button>
+        <div className="result-card">
+          <div className={"grade "+(N>=5?"pass":"fail")}>{fmt(N)}<small> / 10</small></div>
+          <div className="ttl">{titulo}</div>
+          <div className="stats">
+            <div className="stat g"><div className="v">{ac}</div><div className="k">Aciertos</div></div>
+            <div className="stat r"><div className="v">{fa}</div><div className="k">Fallos</div></div>
+            <div className="stat"><div className="v">{bl}</div><div className="k">En blanco</div></div>
+          </div>
+        </div>
+        <div className="rev-h">Revisión</div>
+        <div className="rev">
+          {data.map((qq,k)=>{
+            const a=ans[k];
+            return (
+              <div className="ri" key={k}>
+                <div className="rq">{k+1}. {qq.pregunta}</div>
+                {qq.opciones.map((op,oi)=>{
+                  const isC=oi===qq.correcta, isA=oi===a;
+                  if(!isC && !isA) return null;
+                  const cls = isC ? "ro good" : "ro bad";
+                  return <div className={cls} key={oi}><span className="ic">{isC?"✓":"✗"}</span><span>{op}{isA&&!isC?" · tu respuesta":""}</span></div>;
+                })}
+                {a===null && <div className="ro blank"><span className="ic">–</span><span>Dejada en blanco</span></div>}
+                {qq.explicacion && <div className="rexp"><b>Por qué:</b> {qq.explicacion}</div>}
+              </div>
+            );
+          })}
+        </div>
+        <div className="qnav"><button className="btn btn-primary grow" onClick={onExit}>Terminar</button></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="wrap">
+      <div className="qbar">
+        <button className="back" onClick={onExit} style={{margin:0}}>‹ Salir</button>
+        <span className="qcount">{i+1} de {n}</span>
+      </div>
+      <div className="track"><i style={{width:(i/n*100)+"%"}}></i></div>
+      <div className="q">{q.pregunta}</div>
+      <div className="opts">
+        {q.opciones.map((op,oi)=>(
+          <button key={oi} className={"opt"+(ans[i]===oi?" sel":"")} onClick={()=>pick(oi)}>
+            <span className="mark"></span><span>{op}</span>
+          </button>
+        ))}
+      </div>
+      <div className="qnav">
+        {i>0 && <button className="btn btn-secondary" onClick={()=>setI(i-1)}>Anterior</button>}
+        <button className="btn btn-primary grow" onClick={adv}>{i<n-1 ? "Siguiente" : "Corregir test"}</button>
+      </div>
+      <button className="blank" onClick={adv}>Dejar en blanco y continuar</button>
+    </div>
+  );
+}
+
+function App(){
+  const [v,setV] = useState({name:"home"});
+  const home = ()=>setV({name:"home"});
+  if(v.name==="home") return <Home onTema={(tema)=>setV({name:"tema",tema})} onGen={(niv)=>setV({name:"gen",niv})} />;
+  if(v.name==="tema"){
+    const t = TEMAS.find(x=>x.tema===v.tema);
+    return <TestList eyebrow={"Tema "+t.tema} titulo={t.titulo} tests={t.tests} onBack={home}
+             onPick={(test)=>setV({name:"quiz",titulo:test.nombre,preguntas:test.preguntas})} />;
+  }
+  if(v.name==="gen"){
+    const nm = {sencillo:"Sencillo",medio:"Medio",complicado:"Complicado"}[v.niv];
+    return <TestList eyebrow="Exámenes generales" titulo={"Nivel "+nm.toLowerCase()} tests={GEN.niveles[v.niv]||[]} onBack={home}
+             onPick={(ex)=>setV({name:"quiz",titulo:ex.nombre,preguntas:ex.preguntas})} />;
+  }
+  if(v.name==="quiz") return <Quiz titulo={v.titulo} preguntas={v.preguntas} onExit={home} />;
+  return null;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
